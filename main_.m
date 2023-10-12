@@ -52,17 +52,14 @@ x = sig_in;
 y = PA_out;
 x = x.';
 y = y.';
+u=u.';
 K = 5;
 M = 2;
 
-X = MP_model(x, K, M);
-Y = MP_model(y, K, M);
 
 % 拟合测试，判断阶数与记忆深度是否匹配
-U = MP_model(u.', K, M);
-X_H = X';
-w_test = pinv(X_H * X) * X_H * y;
-y_dis = U * w_test;
+
+y_dis = DPD_Func(x,y,u,K,M);
 figure(6)
 subplot(2, 1, 1)
 plot(u, u);
@@ -84,9 +81,9 @@ hold off;
 
 
 %% 使用逆模型构建预失真
-Y_H = Y';
-w = pinv(Y_H * Y) * Y_H * x;
-X_pre = X * w;
+% Y_H = Y';
+% w = pinv(Y_H * Y) * Y_H * x;
+X_pre = DPD_Func(x,y,x,K,M);
 PA_out2 = saleh(X_pre);
 
 figure(4)
