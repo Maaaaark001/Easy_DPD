@@ -76,11 +76,16 @@ title("AM/AM")
 xlabel("sig in")
 ylabel("PA out")
 subplot(2, 1, 2)
+plot(u, angle(PA_out_u));
+hold on
 plot(u, angle(y_dis));
+hold off
+legend(["PA_out_u" "GMP_u"])
 title("AM/PM")
 xlabel("sig in")
 ylabel("PA out")
 hold off;
+
 
 
 %% 使用逆模型构建预失真

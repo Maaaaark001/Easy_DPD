@@ -59,7 +59,7 @@ M = 2;
 
 % 拟合测试，判断阶数与记忆深度是否匹配
 
-y_dis = DPD_Func(x,y,u,K,M);
+y_dis = DPD_Func(y,x,u,K,M);%注:由于DPD_Func采用的逆模型，这里检测的时候x与y应反过来
 figure(6)
 subplot(2, 1, 1)
 plot(u, u);
@@ -73,7 +73,11 @@ title("AM/AM")
 xlabel("sig in")
 ylabel("PA out")
 subplot(2, 1, 2)
+plot(u, angle(PA_out_u));
+hold on
 plot(u, angle(y_dis));
+hold off
+legend(["PA_out_u" "GMP_u"])
 title("AM/PM")
 xlabel("sig in")
 ylabel("PA out")
