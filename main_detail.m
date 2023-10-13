@@ -8,14 +8,12 @@ N_FFT = N;
 tmax = N / fs;
 t = linspace(0, tmax, N);
 sig_in = sin(2 * pi * f1 .* t) + sin(2 * pi * f2 .* t) + sin(2 * pi * f3 .* t);
-sig_in = sig_in / max(sig_in);
+sig_in = sig_in / max(sig_in); %输入信号归一化
 
 %% 建立带记忆功放失真模型
-b = [0.7692 0.1538 0.0769]; %《射频功放数字预失真线性化技术研究_詹鹏》
-a = [1];
-% 使用saleh模型模拟无记忆失真，使用FIR滤波器模拟记忆效应，检测该模型的AM/AM与AM/PM
+
 u = linspace(0, 1, N);
-PA_out_u = saleh(filter(b, a, u));
+PA_out_u = distortion(u.');
 
 figure(1)
 subplot(2, 1, 1)
@@ -32,15 +30,15 @@ title("AM/PM")
 xlabel("sig in")
 ylabel("PA out")
 
-sig_in = filter(b, a, sig_in);
-PA_out = saleh(sig_in);
+%对输入信号失真
+PA_out = distortion(sig_in);
 figure(2)
 clf
 plot(real(PA_out))
 hold on
 plot(real(sig_in))
 hold off
-plt_fft(PA_out', fs, 3, 1);
+plt_fft(PA_out.', fs, 3, 1);
 ylim([-80 0])
 xlim([0 200e3])
 ylabel("功率谱")
@@ -52,15 +50,14 @@ x = sig_in;
 y = PA_out;
 x = x.';
 y = y.';
-u=u.';
+u = u.';
 K = 5;
 M = 2;
 
-
 % 拟合测试，判断阶数与记忆深度是否匹配
 
-y_dis = DPD_Func(y,x,u,K,M);%注:由于DPD_Func采用的逆模型，这里检测的时候x与y应反过来
-figure(6)
+y_dis = DPD_Func(y, x, u, K, M); %注:由于DPD_Func采用的逆模型，这里检测匹配的时候x与y应反过来
+figure(4)
 subplot(2, 1, 1)
 plot(u, u);
 hold on
@@ -68,7 +65,7 @@ plot(u, abs(PA_out_u));
 hold on
 plot(u, abs(y_dis));
 hold off;
-legend(["line" "PA_out_u" "GMP_u"])
+legend(["line" "PA out" "GMP"])
 title("AM/AM")
 xlabel("sig in")
 ylabel("PA out")
@@ -77,25 +74,25 @@ plot(u, angle(PA_out_u));
 hold on
 plot(u, angle(y_dis));
 hold off
-legend(["PA_out_u" "GMP_u"])
+legend(["PA out" "GMP"])
 title("AM/PM")
 xlabel("sig in")
 ylabel("PA out")
 hold off;
-
+nmse0 = NMSE(u, PA_out_u);
+nmse = NMSE(PA_out_u, y_dis); %归一化均方误差，越接近于0越好
 
 %% 使用逆模型构建预失真
-% Y_H = Y';
-% w = pinv(Y_H * Y) * Y_H * x;
-X_pre = DPD_Func(x,y,x,K,M);
-PA_out2 = saleh(X_pre);
 
-figure(4)
+X_pre = DPD_Func(x, y, x, K, M);
+PA_out2 = distortion(X_pre);
+nmse1 = NMSE(x, PA_out2);
+figure(5)
 plot(real(PA_out2))
 hold on
 plot(real(PA_out))
 hold off
-plt_fft(PA_out2, fs, 5, 1);
+plt_fft(PA_out2, fs, 6, 1);
 ylim([-80 0])
 xlim([0 200e3])
 ylabel("功率谱")

@@ -32,8 +32,7 @@ title("AM/PM")
 xlabel("sig in")
 ylabel("PA out")
 
-sig_in = filter(b, a, sig_in);
-PA_out = saleh(sig_in);
+PA_out = saleh(filter(b, a, sig_in));
 figure(2)
 clf
 plot(real(PA_out))
