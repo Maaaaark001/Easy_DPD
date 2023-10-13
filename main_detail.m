@@ -51,8 +51,8 @@ y = PA_out;
 x = x.';
 y = y.';
 u = u.';
-K = 5;
-M = 2;
+K = 7;
+M = 3;
 
 % 拟合测试，判断阶数与记忆深度是否匹配
 
@@ -93,6 +93,22 @@ hold on
 plot(real(PA_out))
 hold off
 plt_fft(PA_out2, fs, 6, 1);
+ylim([-80 0])
+xlim([0 200e3])
+ylabel("功率谱")
+xlabel("f/Hz")
+title("预失真补偿后")
+
+%% 使用新信号观测系数是否具有泛化能力
+
+f4 = 111e3;
+f5 = 89e3;
+sig_in2 = sin(2 * pi * f4 .* t) + sin(2 * pi * f5 .* t);
+sig_in2 = sig_in2 / max(sig_in2); %输入信号归一化
+X_pre2 = DPD_Func(x, y, sig_in2.', K, M);
+PA_out3 = distortion(X_pre2);
+nmse2 = NMSE(x, PA_out3);
+plt_fft(PA_out3, fs, 7, 1);
 ylim([-80 0])
 xlim([0 200e3])
 ylabel("功率谱")
