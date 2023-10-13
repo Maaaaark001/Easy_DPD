@@ -109,7 +109,7 @@ sig_in2 = sin(2 * pi * f4 .* t) + sin(2 * pi * f5 .* t);
 sig_in2 = sig_in2 / max(sig_in2); %输入信号归一化
 X_pre2 = DPD_Func(x, y, sig_in2.', K, M);
 PA_out3 = distortion(X_pre2);
-nmse2 = NMSE(x, PA_out3);
+nmse2 = NMSE(sig_in2.', PA_out3);
 figure(7)
 plt_fft(PA_out3, fs, 1);
 ylim([-80 0])
