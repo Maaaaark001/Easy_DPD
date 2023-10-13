@@ -1,4 +1,4 @@
-function []=plt_fft(x, fs, num,fl)
+function []=plt_fft(x, fs, fl)
 %fl是判断是否归一化的flag，输入1进行归一化
     L = length(x);
     Y = fft(real(x.*hann(L)));
@@ -11,6 +11,6 @@ function []=plt_fft(x, fs, num,fl)
     else
         P1=20*log10(abs(P1));
     end
-    figure(num)
+
     plot(f, P1)
 end

@@ -38,7 +38,8 @@ plot(real(PA_out))
 hold on
 plot(real(sig_in))
 hold off
-plt_fft(PA_out.', fs, 3, 1);
+figure(3)
+plt_fft(PA_out.', fs, 1);
 ylim([-80 0])
 xlim([0 200e3])
 ylabel("功率谱")
@@ -92,7 +93,8 @@ plot(real(PA_out2))
 hold on
 plot(real(PA_out))
 hold off
-plt_fft(PA_out2, fs, 6, 1);
+figure(6)
+plt_fft(PA_out2, fs, 1);
 ylim([-80 0])
 xlim([0 200e3])
 ylabel("功率谱")
@@ -108,7 +110,8 @@ sig_in2 = sig_in2 / max(sig_in2); %输入信号归一化
 X_pre2 = DPD_Func(x, y, sig_in2.', K, M);
 PA_out3 = distortion(X_pre2);
 nmse2 = NMSE(x, PA_out3);
-plt_fft(PA_out3, fs, 7, 1);
+figure(7)
+plt_fft(PA_out3, fs, 1);
 ylim([-80 0])
 xlim([0 200e3])
 ylabel("功率谱")

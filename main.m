@@ -1,3 +1,4 @@
+% 部分函数已被重构，请直接查看main_detail.m
 %% 信号产生
 fs = 1e6;
 f1 = 90e3;
@@ -39,7 +40,8 @@ plot(real(PA_out))
 hold on
 plot(real(sig_in))
 hold off
-plt_fft(PA_out', fs, 3, 1);
+figure(3)
+plt_fft(PA_out', fs, 1);
 ylim([-80 0])
 xlim([0 200e3])
 ylabel("功率谱")
@@ -98,7 +100,8 @@ plot(real(PA_out2))
 hold on
 plot(real(PA_out))
 hold off
-plt_fft(PA_out2, fs, 5, 1);
+figure(5)
+plt_fft(PA_out2, fs, 1);
 ylim([-80 0])
 xlim([0 200e3])
 ylabel("功率谱")
