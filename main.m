@@ -51,8 +51,8 @@ x = sig_in;
 y = PA_out;
 x = x.';
 y = y.';
-K = 5;
-M = 2;
+K = 7;
+M = 3;
 
 X = MP_model(x, K, M);
 Y = MP_model(y, K, M);
@@ -91,7 +91,7 @@ hold off;
 Y_H = Y';
 w = pinv(Y_H * Y) * Y_H * x;
 X_pre = X * w;
-PA_out2 = saleh(X_pre);
+PA_out2 = saleh(filter(b, a, X_pre));
 
 figure(4)
 plot(real(PA_out2))
