@@ -9,11 +9,12 @@ tmax = N / fs;
 t = linspace(0, tmax, N);
 sig_in = sin(2 * pi * f1 .* t) + sin(2 * pi * f2 .* t) + sin(2 * pi * f3 .* t);
 sig_in = sig_in / max(sig_in); %输入信号归一化
-
+sig_in = sig_in.';
 %% 建立带记忆功放失真模型
 
 u = linspace(0, 1, N);
-PA_out_u = distortion(u.');
+u = u.';
+PA_out_u = distortion(u);
 
 figure(1)
 subplot(2, 1, 1)
@@ -39,7 +40,7 @@ hold on
 plot(real(sig_in))
 hold off
 figure(3)
-plt_fft(PA_out.', fs, 1);
+plt_fft(PA_out, fs, 1);
 ylim([-80 0])
 xlim([0 200e3])
 ylabel("功率谱")
@@ -49,9 +50,6 @@ title("预失真补偿前")
 %% 建立预失真
 x = sig_in;
 y = PA_out;
-x = x.';
-y = y.';
-u = u.';
 K = 7;
 M = 3;
 
@@ -107,9 +105,10 @@ f4 = 111e3;
 f5 = 89e3;
 sig_in2 = sin(2 * pi * f4 .* t) + sin(2 * pi * f5 .* t);
 sig_in2 = sig_in2 / max(sig_in2); %输入信号归一化
-X_pre2 = DPD_Func(x, y, sig_in2.', K, M);
+sig_in2 = sig_in2.';
+X_pre2 = DPD_Func(x, y, sig_in2, K, M);
 PA_out3 = distortion(X_pre2);
-nmse2 = NMSE(sig_in2.', PA_out3);
+nmse2 = NMSE(sig_in2, PA_out3);
 figure(7)
 plt_fft(PA_out3, fs, 1);
 ylim([-80 0])
