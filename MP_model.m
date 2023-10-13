@@ -1,5 +1,5 @@
 function [Y] = MP_model(x_i, K, M)
-
+% 该函数为简化记忆多项式矩阵构造
 for m=0:M
     x=mat_delay(x_i, m);
     for k=0:K

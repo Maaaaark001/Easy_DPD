@@ -1,5 +1,5 @@
 function []=plt_fft(x, fs, fl)
-%fl是判断是否归一化的flag，输入1进行归一化
+% 该函数负责绘制x的fft图像，fl是判断是否归一化的flag，输入1进行归一化
     L = length(x);
     Y = fft(real(x.*hann(L)));
     P2 = abs(Y / L);

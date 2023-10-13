@@ -1,6 +1,6 @@
 function y = saleh(x)
-    %para = [2.1587 1.1517 4.0033 9.1040];
-    para = [1.5 0.5 pi/3 1];
+% 该函数为saleh失真模型算法
+    para = [1.5 0.5 pi/3 1];%该经验系数比较符合常理
     a1 = para(1); b1 = para(2);
     a2 = para(3); b2 = para(4);
     ain = abs(x);
