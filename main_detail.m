@@ -116,3 +116,12 @@ xlim([0 200e3])
 ylabel("功率谱")
 xlabel("f/Hz")
 title("预失真补偿后")
+
+figure(8)
+clf
+plot(abs(sig_in2),abs(real(distortion(sig_in2))),'*');
+hold on
+plot(abs(sig_in2),abs(real(PA_out3)),'*');
+hold on
+plot(abs(u),abs(u),'*');
+hold off
