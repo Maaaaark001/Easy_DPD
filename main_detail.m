@@ -50,7 +50,7 @@ title("预失真补偿前")
 %% 建立预失真
 x = sig_in;
 y = PA_out;
-K = 7;
+K = 5;
 M = 3;
 
 % 拟合测试，判断阶数与记忆深度是否匹配
@@ -95,7 +95,7 @@ figure(6)
 plt_fft(PA_out2, fs, 1);
 ylim([-80 0])
 xlim([0 200e3])
-ylabel("功率谱")
+ylabel("功率谱/dB")
 xlabel("f/Hz")
 title("预失真补偿后")
 
@@ -113,7 +113,7 @@ figure(7)
 plt_fft(PA_out3, fs, 1);
 ylim([-80 0])
 xlim([0 200e3])
-ylabel("功率谱")
+ylabel("功率谱/dB")
 xlabel("f/Hz")
 title("预失真补偿后")
 
