@@ -43,7 +43,7 @@ figure(3)
 plt_fft(PA_out, fs, 1);
 ylim([-80 0])
 xlim([0 200e3])
-ylabel("功率谱")
+ylabel("功率谱/dB")
 xlabel("f/Hz")
 title("预失真补偿前")
 
@@ -91,6 +91,9 @@ plot(real(PA_out2))
 hold on
 plot(real(PA_out))
 hold off
+legend(["Using Pre" "Unusing Pre"])
+xlabel("Sample")
+ylabel("A")
 figure(6)
 plt_fft(PA_out2, fs, 1);
 ylim([-80 0])
@@ -98,6 +101,7 @@ xlim([0 200e3])
 ylabel("功率谱/dB")
 xlabel("f/Hz")
 title("预失真补偿后")
+
 
 %% 使用新信号观测系数是否具有泛化能力
 
@@ -123,5 +127,8 @@ plot(abs(sig_in2),abs(real(distortion(sig_in2))),'*');
 hold on
 plot(abs(sig_in2),abs(real(PA_out3)),'*');
 hold on
-plot(abs(u),abs(u),'*');
+plot(abs(u),abs(u));
 hold off
+xlabel("Input")
+ylabel("Output")
+legend(["Unusing Pre" "Using Pre" "Linear"],'Location','NorthWest');
