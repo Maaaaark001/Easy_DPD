@@ -11,17 +11,25 @@ Easy_DPD/
 │   ├── DPD_Func.m / MP_model.m / NMSE.m / distortion.m
 │   ├── saleh.m / mat_delay.m / plt_fft.m
 │   └── powamp_dpd.slx       #   Simulink 模型
-└── python/                  # Python 版（重写，numpy/scipy 加速）
-    ├── main_detail.py       #   主流程（对应 main_detail.m）
-    ├── gui.py               #   交互式仿真面板（tkinter）
-    ├── easydpd/             #   核心算法包
-    ├── tests/               #   单元测试（37 项）
-    ├── docs/                #   算法审查报告
-    └── requirements.txt
+├── python/                  # Python 版（numpy/scipy 加速）
+│   ├── main_detail.py       #   主流程（对应 main_detail.m）
+│   ├── gui.py               #   交互式仿真面板（tkinter）
+│   ├── easydpd/             #   核心算法包
+│   ├── tests/               #   单元测试（37 项）
+│   ├── docs/                #   算法审查报告
+│   └── requirements.txt
+└── web/                     # 浏览器版（HTML5 + JS + CSS）
+    ├── index.html           #   直接双击打开
+    ├── js/core.js           #   核心算法（mathjs + fft.js）
+    ├── js/simulation.js     #   端到端仿真封装
+    ├── js/main.js           #   UI 逻辑（ECharts 绘图）
+    ├── css/style.css
+    └── test/test_web_core.mjs  # Node 数值验证（npm test）
 ```
 
 - MATLAB 版请直接看 `matlab/main_detail.m`。
 - Python 版请直接看 `python/main_detail.py`，算法审查结论见 `python/docs/algorithm_review.md`。
+- 浏览器版请直接看 `web/index.html`（算法与 Python 版一致，数值经 Node 交叉验证）。
 
 ## Python 版
 
@@ -57,6 +65,26 @@ python -m pytest tests/ -q          # 单元测试（含与 MATLAB 数学等价�
 - **指标**：NMSE（本底/拟合/补偿/泛化）与 ACPR（邻道功率比，dBc）实时显示
 - 参数变化后约 0.4 s 自动重算，也可点 [运行] 立即重算；[恢复默认] 复位参数
 
+## 浏览器版（web/）
+
+纯静态页面，无需构建、**离线可用、双击即用**：直接双击 `web/index.html` 即可在
+浏览器中运行（mathjs 与 ECharts 已本地化到 `web/vendor/`，不依赖 CDN；算法为
+普通 `<script>` 加载，`file://` 下不受 CORS 限制）。
+
+- **功能与 Python GUI 一致**：频点/K/M/N 滑块、奇次项与时延对齐开关、
+  DPD 前后频谱对比、AM/AM、AM/PM、泛化频谱、NMSE 与 ACPR 指标
+- **实时更新开关**：默认开启（调参约 0.4 s 自动重算）；关闭后调参不自动计算、
+  仅点 [运行] 才更新，节省算力；重新开启时立即用当前参数重算一次
+- 算法（`web/js/core.js` / `simulation.js`）与 Python 版逐一对应，
+  FFT 为内置实现，数值已通过 Node 与浏览器双重验证：
+
+```bash
+cd web
+npm install             # 安装 mathjs / playwright-core（仅验证需要）
+npm test                # Node 数值验证：与 Python 基准对比
+npm run test:browser    # 浏览器端到端验证（file:// 打开 + 点击按钮 + 参数调节 + 截图）
+```
+
 ### 目录结构（python/）
 
 ```
@@ -69,6 +97,21 @@ gui.py             # 交互式仿真面板（tkinter + matplotlib 嵌入）
 tests/test_core.py # 数值正确性测试
 tests/test_gui.py  # GUI 冒烟测试（无桌面时自动跳过）
 docs/algorithm_review.md  # 算法审查报告
+```
+
+### 目录结构（web/）
+
+```
+web/
+  index.html              # 入口，直接双击打开（离线可用）
+  vendor/                 # 本地化第三方库：math.min.js / echarts.min.js
+  js/core.js              # 核心算法（复数用 mathjs，FFT 内置 radix-2）
+  js/simulation.js        # run_simulation 端到端仿真封装
+  js/main.js              # UI 逻辑与 ECharts 绘图
+  css/style.css           # 深色主题样式
+  test/test_web_core.mjs  # Node 数值验证（与 Python 基准对比）
+  test/browser_check.mjs  # 浏览器端到端验证（playwright + 系统 Edge）
+  package.json            # npm 依赖声明（mathjs / playwright-core）
 ```
 
 ### 与 MATLAB 版的关系

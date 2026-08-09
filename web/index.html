@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Easy_DPD · 浏览器仿真面板</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📡</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>Easy_DPD 数字预失真仿真</h1>
+    <span class="status" id="status">就绪</span>
+  </header>
+
+  <main class="layout">
+    <!-- 参数面板 -->
+    <aside class="panel">
+      <section class="card">
+        <h3>仿真参数</h3>
+
+        <div class="field">
+          <label>训练频点 f1</label>
+          <input type="range" id="f1" min="50" max="150" step="1" value="90">
+          <span class="val" id="f1v">90 kHz</span>
+        </div>
+        <div class="field">
+          <label>训练频点 f2</label>
+          <input type="range" id="f2" min="50" max="150" step="1" value="100">
+          <span class="val" id="f2v">100 kHz</span>
+        </div>
+        <div class="field">
+          <label>训练频点 f3</label>
+          <input type="range" id="f3" min="50" max="150" step="1" value="110">
+          <span class="val" id="f3v">110 kHz</span>
+        </div>
+
+        <div class="field check">
+          <label><input type="checkbox" id="gen" checked> 启用泛化测试</label>
+        </div>
+        <div class="field">
+          <label>泛化频点 f4</label>
+          <input type="range" id="f4" min="50" max="150" step="1" value="89">
+          <span class="val" id="f4v">89 kHz</span>
+        </div>
+        <div class="field">
+          <label>泛化频点 f5</label>
+          <input type="range" id="f5" min="50" max="150" step="1" value="111">
+          <span class="val" id="f5v">111 kHz</span>
+        </div>
+
+        <hr>
+
+        <div class="field">
+          <label>K（阶数）</label>
+          <input type="range" id="K" min="1" max="9" step="1" value="5">
+          <span class="val" id="Kv">5</span>
+        </div>
+        <div class="field">
+          <label>M（记忆深度）</label>
+          <input type="range" id="M" min="0" max="5" step="1" value="3">
+          <span class="val" id="Mv">3</span>
+        </div>
+        <div class="field">
+          <label>N（样本数）</label>
+          <select id="N">
+            <option value="16384" selected>16384</option>
+            <option value="32768">32768</option>
+            <option value="65536">65536</option>
+          </select>
+        </div>
+
+        <div class="field check">
+          <label><input type="checkbox" id="oddOnly"> 只保留奇次项（窄带 DPD 标准做法）</label>
+        </div>
+        <div class="field check">
+          <label><input type="checkbox" id="delayAlign"> 拟合前时延对齐</label>
+        </div>
+        <div class="field check">
+          <label><input type="checkbox" id="realtime" checked> 实时更新（关闭后仅点 [运行] 计算）</label>
+        </div>
+
+        <div class="btns">
+          <button id="run" class="primary">运行</button>
+          <button id="reset">恢复默认</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h3>指标</h3>
+        <table class="metrics">
+          <tr><td>失真本底 NMSE0</td><td id="m-nmse0" class="mono">--</td></tr>
+          <tr><td>拟合精度 NMSE</td><td id="m-nmseFit" class="mono">--</td></tr>
+          <tr><td>补偿后(同频) NMSE1</td><td id="m-nmse1" class="mono">--</td></tr>
+          <tr><td>补偿后(泛化) NMSE2</td><td id="m-nmse2" class="mono">--</td></tr>
+          <tr><td>ACPR 训练 前→后</td><td id="m-acprT" class="mono">--</td></tr>
+          <tr><td>ACPR 泛化 前→后</td><td id="m-acprG" class="mono">--</td></tr>
+        </table>
+      </section>
+    </aside>
+
+    <!-- 图表区 -->
+    <section class="charts">
+      <div id="c-spec" class="chart"></div>
+      <div id="c-amam" class="chart"></div>
+      <div id="c-ampm" class="chart"></div>
+      <div id="c-gen" class="chart"></div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    HTML5 + JS + CSS 版 · 算法移植自 python/easydpd · mathjs + fft.js + ECharts
+  </footer>
+
+  <!-- 本地依赖与算法（普通 script 顺序加载，file:// 双击打开不受 CORS 限制） -->
+  <script src="vendor/math.min.js"></script>
+  <script src="vendor/echarts.min.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/simulation.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "easydpd-web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Easy_DPD 浏览器版：DPD 仿真（HTML5 + JS + CSS，mathjs/ECharts，内置 FFT）",
+  "scripts": {
+    "test": "node test/test_web_core.mjs",
+    "test:browser": "node test/browser_check.mjs"
+  },
+  "dependencies": {
+    "mathjs": "^12.4.3",
+    "playwright-core": "^1.62.1"
+  }
+}

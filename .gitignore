@@ -3,3 +3,5 @@ __pycache__/
 .pytest_cache/
 results/
 .reasonix/
+node_modules/
+web/test/*.png
